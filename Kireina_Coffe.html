@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kireina Coffee Shop - Nikmati Kopi Berkualitas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'kireina-blue': '#3B82F6',
+                        'kireina-yellow': '#FBBF24',
+                        'kireina-light': '#F0F9FF',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #FFFFFF 0%, #F0F9FF 50%, #FFF9F0 100%);
+            background-attachment: fixed;
+        }
+
+        .coffee-bean {
+            position: absolute;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .menu-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .reservation-card {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F0F9FF 100%);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .animate-bean {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .animate-bean-delay-1 {
+            animation-delay: 1s;
+        }
+
+        .animate-bean-delay-2 {
+            animation-delay: 2s;
+        }
+
+        .animate-bean-delay-3 {
+            animation-delay: 3s;
+        }
+
+        .coffee-splash {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120%;
+            height: 100px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23f0f9ff' fill-opacity='1' d='M0,128L60,117.3C120,107,240,85,360,101.3C480,117,600,171,720,181.3C840,192,960,160,1080,138.7C1200,117,1320,107,1380,101.3L1440,96L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+            background-size: cover;
+            background-position: center;
+            z-index: 0;
+        }
+
+        .category-btn.active {
+            background-color: #3B82F6;
+            color: white;
+        }
+    </style>
+</head>
+
+<body class="overflow-x-hidden">
+
+    <!-- Header Section -->
+    <header class="bg-white shadow-md fixed w-full z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <div class="w-12 h-12 rounded-full bg-kireina-yellow flex items-center justify-center mr-3">
+                    <img src="coffee_18873932.gif" alt="" class="w-full animate-bean animate-bean-delay-1">
+                </div>
+                <a href="#home" class="text-2xl font-bold text-kireina-bold hover:underline">
+                    Kireina.<span class="text-kireina-yellow">Coffee</span>
+                </a>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex space-x-8 pr-3">
+                <a href="#home" class="text-gray-700 hover:text-kireina-blue hover:underline font-medium">Beranda
+                    <i class="fas fa-home ml-1"></i>
+                </a>
+                <a href="#menu" class="text-gray-700 hover:text-kireina-blue hover:underline font-medium">Menu
+                    <i class="fas fa-coffee ml-1"></i>
+                </a>
+                <a href="#reservation" class="text-gray-700 hover:text-kireina-blue hover:underline font-medium">Reservasi
+                    <i class="fas fa-calendar-check ml-1"></i>
+                </a>
+                <a href="#about" class="text-gray-700 hover:text-kireina-blue hover:underline font-medium">Tentang Kami
+                    <i class="fas fa-info-circle ml-1"></i>
+                </a>
+            </nav>
+
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="pt-24 pb-32 relative overflow-hidden">
+        <div class="coffee-splash"></div>
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-10 md:mb-0 relative">
+                <div class="relative inline-block">
+                    <img src="tempat.jpg" alt="Kireina Coffee"
+                        class="rounded-2xl shadow-xl w-full max-w-lg transform rotate-3 hover:rotate-0 transition duration-500">
+                    <div
+                        class="absolute -bottom-6 -right-6 bg-kireina-yellow text-white px-6 py-3 rounded-xl shadow-lg">
+                        Pengunjung hari ini: <span id="visitor-count">...</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <script>
+                // Simulasi counter pengunjung menggunakan localStorage
+                document.addEventListener('DOMContentLoaded', function () {
+                    const key = 'kireina-visitor-count';
+                    let count = localStorage.getItem(key);
+                    if (!count) count = 0;
+                    count = parseInt(count, 10) + 1;
+                    localStorage.setItem(key, count);
+                    document.getElementById('visitor-count').textContent = count;
+                });
+            </script>
+
+            <div class="md:w-1/2 md:pl-12">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
+                    Nikmati Sensasi <span class="text-kireina-bold">Kopi</span> di
+                    <span class="text-kireina-yellow">Kireina.Coffee</span>
+                </h2>
+                <p class="text-gray-600 mb-8 text-lg">
+                    Temukan berbagai pilihan kopi berkualitas tinggi, makanan lezat, dan suasana nyaman untuk bersantai
+                    atau bekerja.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#menu"
+                        class="bg-kireina-blue text-white px-8 py-4 rounded-full font-bold hover:bg-blue-600 transition shadow-lg transform hover:scale-105">
+                        Lihat Menu <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                    <a href="#reservation"
+                        class="bg-white text-kireina-blue border-2 border-kireina-blue px-8 py-4 rounded-full font-bold hover:bg-kireina-light transition shadow">
+                        Reservasi Tempat <i class="fas fa-calendar-check ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-20 bg-kireina-light">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">Menu Best Kami</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Jelajahi berbagai pilihan kopi spesial, minuman segar, dan makanan lezat yang kami sediakan
+                </p>
+            </div>
+
+            <!-- Menu Items Carousel -->
+            <div class="relative">
+                <div id="menu-carousel" class="flex gap-8 overflow-x-auto scroll-smooth pb-4"
+                    style="scrollbar-width: none;">
+                    <!-- Coffee Items -->
+                    <!-- Menu Card: Espresso -->
+                    <div class="menu-card bg-white rounded-2xl p-6 shadow-lg min-w-[320px]">
+                        <div class="h-40 overflow-hidden rounded-xl mb-4">
+                            <img src="Pandan late.jpg" alt="Pandan Latte" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex flex-col items-start mb-1">
+                            <h3 class="text-xl font-bold text-gray-800">Pandan Latte</h3>
+                            <p class="text-gray-600 text-sm">Kopi pandan Latte yang nikmat dengan creamy yang tebal</p>
+                            <span class="text-kireina-yellow font-bold text-xl">Rp 25.000</span>
+                        </div>
+                        <button
+                            class="w-full bg-kireina-blue text-white py-2 rounded-lg font-medium hover:bg-blue-600 transition"
+                            onclick="showMenuDetail('Pandan Latte', 'Kopi pandan Latte yang nikmat dengan creamy yang tebal dan memiliki rasa yang kuat.', 4.7, 'Rp 25.000')">
+                            Details Menu
+                        </button>
+                    </div>
+
+                    <!-- Menu Card: Cappuccino -->
+                    <div class="menu-card bg-white rounded-2xl p-6 shadow-lg min-w-[320px]">
+                        <div class="h-40 overflow-hidden rounded-xl mb-4">
+                            <img src="https://images.unsplash.com/photo-1534687941688-651ccaafbff8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                                alt="Cappuccino" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex flex-col items-start mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">Cappuccino</h3>
+                            <p class="text-gray-600 text-sm">Espresso dengan susu steamed dan busa tebal</p>
+                            <span class="text-kireina-yellow font-bold text-xl">Rp 32.000</span>
+                        </div>
+                        <button
+                            class="w-full bg-kireina-blue text-white py-2 rounded-lg font-medium hover:bg-blue-600 transition"
+                            onclick="showMenuDetail('Cappuccino', 'Espresso dengan susu steamed dan busa tebal. Cappuccino adalah minuman klasik Italia yang creamy dan nikmat, cocok untuk segala suasana.', 4.8, 'Rp 32.000')">
+                            Details Menu
+                        </button>
+                    </div>
+
+                    <!-- Menu Card: Matcha Latte -->
+                    <div class="menu-card bg-white rounded-2xl p-6 shadow-lg min-w-[320px]">
+                        <div class="h-40 overflow-hidden rounded-xl mb-4">
+                            <img src="Coklat_Hazelnut.jpg" alt="Taro_Latte" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex flex-col items-start mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">Coklat Hazelnut</h3>
+                            <p class="text-gray-600 text-sm">Minuman Coklat_Hazelnut premium</p>
+                            <span class="text-kireina-yellow font-bold text-xl">Rp 35.000</span>
+                        </div>
+                        <button
+                            class="w-full bg-kireina-blue text-white py-2 rounded-lg font-medium hover:bg-blue-600 transition"
+                            onclick="showMenuDetail('Coklat Hazelnut', 'Minuman Coklat Hazelnut dengan susu, memberikan rasa manis dan Rasa Coklat Hazelnut yang khas.', 4.6, 'Rp 35.000')">
+                            Details Menu
+                        </button>
+                    </div>
+
+                    <!-- Menu Card: Croissant -->
+                    <div class="menu-card bg-white rounded-2xl p-6 shadow-lg min-w-[320px]">
+                        <div class="h-40 overflow-hidden rounded-xl mb-4">
+                            <img src="https://images.unsplash.com/photo-1620146344904-097a0002d797?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                                alt="Croissant" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex flex-col items-start mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">Croissant</h3>
+                            <p class="text-gray-600 text-sm">Croissant renyah dengan isian cokelat</p>
+                            <span class="text-kireina-yellow font-bold text-xl">Rp 28.000</span>
+                        </div>
+                        <button
+                            class="w-full bg-kireina-blue text-white py-2 rounded-lg font-medium hover:bg-blue-600 transition"
+                            onclick="showMenuDetail('Croissant', 'Croissant renyah dengan isian cokelat, cocok untuk teman ngopi pagi atau sore.', 4.5, 'Rp 28.000')">
+                            Details Menu
+                        </button>
+                    </div>
+
+                    <!-- Menu Card: Banana Bread -->
+                    <div class="menu-card bg-white rounded-2xl p-6 shadow-lg min-w-[320px]">
+                        <div class="h-40 overflow-hidden rounded-xl mb-4">
+                            <img src="https://images.unsplash.com/photo-1608376630923-187fddb0f0ee?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                                alt="Banana Bread" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex flex-col items-start mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">Banana Bread</h3>
+                            <p class="text-gray-600 text-sm">Pisang panggang lembut dengan kacang kenari</p>
+                            <span class="text-kireina-yellow font-bold text-xl">Rp 30.000</span>
+                        </div>
+                        <button
+                            class="w-full bg-kireina-blue text-white py-2 rounded-lg font-medium hover:bg-blue-600 transition"
+                            onclick="showMenuDetail('Banana Bread', 'Pisang panggang lembut dengan kacang kenari, manis dan gurih.', 4.4, 'Rp 30.000')">
+                            Details Menu
+                        </button>
+                    </div>
+
+                    <!-- Menu Card: Avocado Toast -->
+                    <div class="menu-card bg-white rounded-2xl p-6 shadow-lg min-w-[320px]">
+                        <div class="h-40 overflow-hidden rounded-xl mb-4">
+                            <img src="https://images.unsplash.com/photo-1551892374-ecf8754cf8b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                                alt="Avocado Toast" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex flex-col items-start mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">Avocado Toast</h3>
+                            <p class="text-gray-600 text-sm">Roti panggang dengan alpukat dan telur</p>
+                            <span class="text-kireina-yellow font-bold text-xl">Rp 45.000</span>
+                        </div>
+                        <button
+                            class="w-full bg-kireina-blue text-white py-2 rounded-lg font-medium hover:bg-blue-600 transition"
+                            onclick="showMenuDetail('Avocado Toast', 'Roti panggang dengan alpukat segar dan telur, sehat dan mengenyangkan.', 4.7, 'Rp 45.000')">
+                            Details Menu
+                        </button>
+                    </div>
+
+                    <!-- Menu Card: Caramel Macchiato -->
+                    <div class="menu-card bg-white rounded-2xl p-6 shadow-lg min-w-[320px]">
+                        <div class="h-40 overflow-hidden rounded-xl mb-4">
+                            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                                alt="Caramel Macchiato" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex flex-col items-start mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">Caramel Macchiato</h3>
+                            <p class="text-gray-600 text-sm">Espresso, susu, dan saus karamel spesial</p>
+                            <span class="text-kireina-yellow font-bold text-xl">Rp 38.000</span>
+                        </div>
+                        <button
+                            class="w-full bg-kireina-blue text-white py-2 rounded-lg font-medium hover:bg-blue-600 transition"
+                            onclick="showMenuDetail('Caramel Macchiato', 'Espresso, susu, dan saus karamel spesial yang manis dan creamy.', 4.8, 'Rp 38.000')">
+                            Details Menu
+                        </button>
+                    </div>
+
+                    <!-- Menu Card: Iced Americano -->
+                    <div class="menu-card bg-white rounded-2xl p-6 shadow-lg min-w-[320px]">
+                        <div class="h-40 overflow-hidden rounded-xl mb-4">
+                            <img src="https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                                alt="Iced Americano" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex flex-col items-start mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">Iced Americano</h3>
+                            <p class="text-gray-600 text-sm">Espresso dengan air dingin dan es batu</p>
+                            <span class="text-kireina-yellow font-bold text-xl">Rp 27.000</span>
+                        </div>
+                        <button
+                            class="w-full bg-kireina-blue text-white py-2 rounded-lg font-medium hover:bg-blue-600 transition"
+                            onclick="showMenuDetail('Iced Americano', 'Espresso dengan air dingin dan es batu, menyegarkan untuk hari yang panas.', 4.5, 'Rp 27.000')">
+                            Details Menu
+                        </button>
+                    </div>
+
+                    <!-- Menu Card: Chocolate Cake -->
+                    <div class="menu-card bg-white rounded-2xl p-6 shadow-lg min-w-[320px]">
+                        <div class="h-40 overflow-hidden rounded-xl mb-4">
+                            <img src="https://images.unsplash.com/photo-1502741338009-cac2772e18bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                                alt="Chocolate Cake" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex flex-col items-start mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">Chocolate Cake</h3>
+                            <p class="text-gray-600 text-sm">Kue cokelat lembut dan moist</p>
+                            <span class="text-kireina-yellow font-bold text-xl">Rp 33.000</span>
+                        </div>
+                        <button
+                            class="w-full bg-kireina-blue text-white py-2 rounded-lg font-medium hover:bg-blue-600 transition"
+                            onclick="showMenuDetail('Chocolate Cake', 'Kue cokelat lembut dan moist, cocok untuk pencinta cokelat.', 4.6, 'Rp 33.000')">
+                            Details Menu
+                        </button>
+                    </div>
+
+                    <!-- Menu Card: Lemon Tea -->
+                    <div class="menu-card bg-white rounded-2xl p-6 shadow-lg min-w-[320px]">
+                        <div class="h-40 overflow-hidden rounded-xl mb-4">
+                            <img src="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                                alt="Lemon Tea" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex flex-col items-start mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">Lemon Tea</h3>
+                            <p class="text-gray-600 text-sm">Teh segar dengan perasan lemon asli</p>
+                            <span class="text-kireina-yellow font-bold text-xl">Rp 22.000</span>
+                        </div>
+                        <button
+                            class="w-full bg-kireina-blue text-white py-2 rounded-lg font-medium hover:bg-blue-600 transition"
+                            onclick="showMenuDetail('Lemon Tea', 'Teh segar dengan perasan lemon asli, menyegarkan dan sehat.', 4.3, 'Rp 22.000')">
+                            Details Menu
+                        </button>
+                    </div>
+
+                    <!-- Modal for Menu Details (hanya satu modal di luar loop/menu) -->
+                    <div id="menu-detail-modal"
+                        class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+                        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 relative">
+                            <button onclick="closeMenuDetail()"
+                                class="absolute top-3 right-3 text-gray-400 hover:text-red-500 text-xl">&times;</button>
+                            <h3 id="modal-menu-title" class="text-2xl font-bold text-gray-800 mb-2"></h3>
+                            <p id="modal-menu-desc" class="text-gray-600 mb-4"></p>
+                            <div class="flex items-center mb-2">
+                                <span id="modal-menu-rating" class="text-yellow-400 text-lg mr-2"></span>
+                                <span id="modal-menu-rating-value" class="text-gray-700 font-medium"></span>
+                            </div>
+                            <div class="text-kireina-yellow font-bold text-xl mb-2" id="modal-menu-price"></div>
+                            <button onclick="closeMenuDetail()"
+                                class="mt-4 w-full bg-kireina-blue text-white py-2 rounded-lg font-medium hover:bg-blue-600 transition">Tutup</button>
+                        </div>
+                    </div>
+                    <script>
+                        function showMenuDetail(title, desc, rating, price) {
+                            document.getElementById('modal-menu-title').textContent = title;
+                            document.getElementById('modal-menu-desc').textContent = desc;
+                            document.getElementById('modal-menu-price').textContent = price;
+                            // Render stars (rating bisa desimal)
+                            let stars = '';
+                            for (let i = 1; i <= 5; i++) {
+                                if (i <= Math.floor(rating)) {
+                                    stars += '<i class="fas fa-star"></i>';
+                                } else if (i - rating < 1) {
+                                    stars += '<i class="fas fa-star-half-alt"></i>';
+                                } else {
+                                    stars += '<i class="far fa-star"></i>';
+                                }
+                            }
+                            document.getElementById('modal-menu-rating').innerHTML = stars;
+                            document.getElementById('modal-menu-rating-value').textContent = rating;
+                            document.getElementById('menu-detail-modal').classList.remove('hidden');
+                        }
+                        function closeMenuDetail() {
+                            document.getElementById('menu-detail-modal').classList.add('hidden');
+                        }
+                    </script>
+                </div>
+            </div>
+        </div>
+        <style>
+            #menu-carousel::-webkit-scrollbar {
+                display: none;
+            }
+        </style>
+        <script>
+            // Auto scroll carousel
+            document.addEventListener('DOMContentLoaded', function () {
+                const carousel = document.getElementById('menu-carousel');
+                let scrollAmount = 0;
+                let scrollStep = 340; // width of card + gap
+                let autoScroll = setInterval(() => {
+                    if (carousel.scrollLeft + carousel.offsetWidth >= carousel.scrollWidth - 10) {
+                        carousel.scrollTo({ left: 0, behavior: 'smooth' });
+                    } else {
+                        carousel.scrollBy({ left: scrollStep, behavior: 'smooth' });
+                    }
+                }, 2500);
+
+                // Pause on hover
+                carousel.addEventListener('mouseenter', () => clearInterval(autoScroll));
+                carousel.addEventListener('mouseleave', () => {
+                    autoScroll = setInterval(() => {
+                        if (carousel.scrollLeft + carousel.offsetWidth >= carousel.scrollWidth - 10) {
+                            carousel.scrollTo({ left: 0, behavior: 'smooth' });
+                        } else {
+                            carousel.scrollBy({ left: scrollStep, behavior: 'smooth' });
+                        }
+                    }, 2500);
+                });
+
+                // Manual scroll with buttons
+                const btnLeft = document.getElementById('menu-scroll-left');
+                const btnRight = document.getElementById('menu-scroll-right');
+                if (btnLeft && btnRight) {
+                    btnLeft.addEventListener('click', () => {
+                        carousel.scrollBy({ left: -scrollStep, behavior: 'smooth' });
+                    });
+                    btnRight.addEventListener('click', () => {
+                        carousel.scrollBy({ left: scrollStep, behavior: 'smooth' });
+                    });
+                }
+            });
+        </script>
+    </section>
+
+    <!-- Reservation Section -->
+    <section id="reservation" class="py-20 relative">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto reservation-card p-8 md:p-12">
+                <div class="text-center mb-10">
+                    <h2 class="text-4xl font-bold text-gray-800 mb-4">Reservasi Tempat</h2>
+                    <p class="text-gray-600">
+                        Pesan tempat Anda sekarang untuk pengalaman nyaman di Kireina Coffee. Pilih antara tempat indoor
+                        yang cozy atau outdoor yang asri.
+                    </p>
+                </div>
+
+                <form id="reservationForm" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <label class="block text-gray-700 mb-2 font-medium">Nama Lengkap</label>
+                        <input type="text" name="nama"
+                            class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-kireina-blue focus:outline-none"
+                            placeholder="Nama Anda" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 mb-2 font-medium">Nomor WhatsApp</label>
+                        <input type="tel" name="whatsapp"
+                            class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-kireina-blue focus:outline-none"
+                            placeholder="Contoh: 081234567890" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 mb-2 font-medium">Tanggal Reservasi</label>
+                        <input type="date" name="tanggal"
+                            class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-kireina-blue focus:outline-none"
+                            required>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 mb-2 font-medium">Waktu</label>
+                        <select name="waktu"
+                            class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-kireina-blue focus:outline-none"
+                            required>
+                            <option value="">Pilih Waktu</option>
+                            <option value="08:00">08:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="16:00">16:00</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 mb-2 font-medium">Jumlah Orang</label>
+                        <select name="jumlahOrang"
+                            class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-kireina-blue focus:outline-none"
+                            required>
+                            <option value="1">1 Orang</option>
+                            <option value="2">2 Orang</option>
+                            <option value="3">3 Orang</option>
+                            <option value="4">4 Orang</option>
+                            <option value="5+">5+ Orang</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-blue-700 mb-2 font-medium">Tipe Tempat</label>
+                        <div class="flex space-x-4">
+                            <label class="flex items-center">
+                                <input type="radio" name="placeType" value="Indoor" class="mr-2" checked>
+                                <span>Indoor</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="placeType" value="Outdoor" class="mr-2">
+                                <span>Outdoor</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-gray-700 mb-2 font-medium">Pesan Tambahan</label>
+                        <textarea name="pesanTambahan"
+                            class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-kireina-blue focus:outline-none"
+                            rows="3" placeholder="Contoh: Saya Inggin tambahan kursi dan meja "></textarea>
+                    </div>
+
+                    <div class="md:col-span-2 text-center">
+                        <button type="submit"
+                            class="bg-kireina-yellow text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-amber-500 transition transform hover:scale-105 shadow-lg"
+                            id="reservation-submit-btn">
+                            <i class="fab fa-whatsapp mr-2"></i> Reservasi via WhatsApp
+                        </button>
+                        <script>
+                            // Fokus ke form saat tombol diklik
+                            document.getElementById('reservation-submit-btn').addEventListener('click', function () {
+                                document.getElementById('reservationForm').scrollIntoView({ behavior: 'smooth' });
+                            });
+                        </script>
+                        <p class="mt-4 text-gray-600 text-sm">
+                            Dengan mengklik tombol di atas, Anda akan diarahkan ke WhatsApp untuk konfirmasi reservasi
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const reservationForm = document.getElementById('reservationForm');
+            if (reservationForm) {
+                reservationForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    const nama = reservationForm.querySelector('input[name="nama"]').value;
+                    const whatsapp = reservationForm.querySelector('input[name="whatsapp"]').value;
+                    const tanggal = reservationForm.querySelector('input[name="tanggal"]').value;
+                    const waktu = reservationForm.querySelector('select[name="waktu"]').value;
+                    const jumlahOrang = reservationForm.querySelector('select[name="jumlahOrang"]').value;
+                    const tipeTempat = reservationForm.querySelector('input[name="placeType"]:checked').value;
+                    const pesanTambahan = reservationForm.querySelector('textarea[name="pesanTambahan"]').value;
+
+                    let pesan = `Reservasi Kireina Coffee%0A`;
+                    pesan += `Nama : ${nama}%0A`;
+                    pesan += `No. WhatsApp : ${whatsapp}%0A`;
+                    pesan += `Tanggal: ${tanggal}%0A`;
+                    pesan += `Waktu : ${waktu}%0A`;
+                    pesan += `Jumlah Orang : ${jumlahOrang}%0A`;
+                    pesan += `Tipe Tempat : ${tipeTempat}%0A`;
+                    pesan += `Pesan Tambahan : ${pesanTambahan ? pesanTambahan : '-'}%0A`;
+
+                    window.open(`https://wa.me/6282317819412?text=${pesan}`, '_blank');
+                });
+            }
+        });
+    </script>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-kireina-light">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold text-gray-800 mb-4">Tentang Kireina Coffee</h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto">
+                        Temukan cerita di balik kedai kopi yang menawarkan pengalaman berbeda
+                    </p>
+                </div>
+
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <!-- Carousel Card with Card-like Animation -->
+                    <div class="md:w-1/2">
+                        <div class="relative mb-8">
+                            <div
+                                class="absolute -top-6 -left-6 w-24 h-24 bg-kireina-yellow rounded-full opacity-20 animate-pulse-slow">
+                            </div>
+                            <div
+                                class="absolute -bottom-6 -right-6 w-24 h-24 bg-kireina-blue rounded-full opacity-20 animate-pulse-slow">
+                            </div>
+                            <div id="about-carousel" class="relative h-72 w-full max-w-md mx-auto overflow-visible">
+                                <div class="carousel-card absolute inset-0 flex items-center justify-center transition-all duration-700 ease-in-out"
+                                    style="z-index:2;">
+                                    <img src="Toko_Kireina.jpg" alt="Kireina Coffee Interior"
+                                        class="rounded-2xl shadow-2xl w-full h-72 object-cover" />
+                                </div>
+                                <div class="carousel-card absolute inset-0 flex items-center justify-center transition-all duration-700 ease-in-out"
+                                    style="z-index:1; opacity:0; transform: scale(0.95) rotate(-3deg);">
+                                    <img src="kireina2.jpg" alt="Kireina Coffee Suasana"
+                                        class="rounded-2xl shadow-2xl w-full h-72 object-cover" />
+                                </div>
+                                <div class="carousel-card absolute inset-0 flex items-center justify-center transition-all duration-700 ease-in-out"
+                                    style="z-index:0; opacity:0; transform: scale(0.95) rotate(3deg);">
+                                    <img src="tampilan.jpg" alt="Barista Kireina Coffee"
+                                        class="rounded-2xl shadow-2xl w-full h-72 object-cover" />
+                                </div>
+                                <div class="carousel-card absolute inset-0 flex items-center justify-center transition-all duration-700 ease-in-out"
+                                    style="z-index:0; opacity:0; transform: scale(0.95) rotate(3deg);">
+                                    <img src="Kopi.jpg" alt="Barista Kireina Coffee"
+                                        class="rounded-2xl shadow-2xl w-full h-72 object-cover" />
+                                </div>
+                                <div class="carousel-card absolute inset-0 flex items-center justify-center transition-all duration-700 ease-in-out"
+                                    style="z-index:0; opacity:0; transform: scale(0.95) rotate(3deg);">
+                                    <img src="tempat.jpg" alt="Kireina Coffee Outdoor"
+                                        class="rounded-2xl shadow-2xl w-full h-72 object-cover" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <style>
+                        /* Card animation for carousel */
+                        #about-carousel .carousel-card {
+                            box-shadow: 0 10px 32px 0 rgba(59, 130, 246, 0.10), 0 2px 4px 0 rgba(0, 0, 0, 0.04);
+                            border-radius: 1rem;
+                            background: #fff;
+                        }
+                    </style>
+                    <script>
+                        // Carousel with card-like animation
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const carousel = document.getElementById('about-carousel');
+                            if (!carousel) return;
+                            const slides = carousel.querySelectorAll('.carousel-card');
+                            let idx = 0;
+                            setInterval(() => {
+                                slides.forEach((slide, i) => {
+                                    if (i === idx) {
+                                        slide.style.zIndex = 2;
+                                        slide.style.opacity = 1;
+                                        slide.style.transform = "scale(1) rotate(0deg)";
+                                        slide.style.boxShadow = "0 10px 32px 0 rgba(59,130,246,0.15), 0 2px 4px 0 rgba(0,0,0,0.08)";
+                                    } else if (i === (idx + 1) % slides.length) {
+                                        slide.style.zIndex = 1;
+                                        slide.style.opacity = 0.7;
+                                        slide.style.transform = "scale(0.95) rotate(-3deg)";
+                                        slide.style.boxShadow = "0 4px 16px 0 rgba(59,130,246,0.08)";
+                                    } else {
+                                        slide.style.zIndex = 0;
+                                        slide.style.opacity = 0.5;
+                                        slide.style.transform = "scale(0.95) rotate(3deg)";
+                                        slide.style.boxShadow = "none";
+                                    }
+                                });
+                                idx = (idx + 1) % slides.length;
+                            }, 3000);
+                        });
+                    </script>
+
+                    <div class="md:w-1/2">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Kireina: Keindahan dalam Setiap Tegukan</h3>
+                        <p class="text-gray-600 mb-4">
+                            Kireina Coffee didirikan pada tahun 2020 dengan misi memberikan pengalaman ngopi yang
+                            berbeda.
+                            Nama "Kireina" yang berarti "indah" dalam bahasa Jepang mencerminkan filosofi kami dalam
+                            menyajikan kopi.
+                        </p>
+                        <p class="text-gray-600 mb-6">
+                            Kami memilih biji kopi terbaik dari petani lokal dan internasional, dipanggang dengan
+                            sempurna
+                            untuk menghadirkan cita rasa yang unik dan memikat.
+                        </p>
+
+                        <div class="flex items-center">
+                            <div class="mr-4">
+                                <i class="fas fa-map-marker-alt text-kireina-blue text-2xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Lokasi Kami</h4>
+                                <p class="text-gray-600">Jl. Sungai Malei, Ujuna, Kec. Palu Bar., Kota Palu, Sulawesi
+                                    Tengah 94111</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center mt-4">
+                            <div class="mr-4">
+                                <i class="fas fa-clock text-kireina-blue text-2xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Jam Buka</h4>
+                                <p class="text-gray-600">Setiap Hari: 08:00 - 22:00 WIB</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-kireina-blue text-white pt-6 pb-4 text-sm">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <div class="w-9 h-9 rounded-full bg-kireina-yellow flex items-center justify-center mr-2">
+                            <img src="coffee_18873932.gif" alt="" class="w-full rounded-full">
+                        </div>
+                        <h1 class="text-lg font-bold text-white">Kireina.<span class="text-kireina-yellow">Coffee</span>
+                        </h1>
+                    </div>
+                    <p class="text-kireina-light mb-3 text-sm">
+                        Menyajikan kopi berkualitas dengan suasana yang nyaman dan hangat untuk setiap pelanggan.
+                    </p>
+                    <div class="flex space-x-2">
+                        <a href="https://www.instagram.com/kireina.coffee/"
+                            class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center hover:bg-blue-700 transition">
+                            <i class="fab fa-instagram text-xs"></i>
+                        </a>
+                        <a href="#"
+                            class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center hover:bg-blue-700 transition">
+                            <i class="fab fa-facebook-f text-xs"></i>
+                        </a>
+                        <a href="#"
+                            class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center hover:bg-blue-700 transition">
+                            <i class="fab fa-twitter text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-base font-bold mb-4">Tautan Cepat</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-kireina-light hover:text-kireina-yellow transition">Beranda</a>
+                        </li>
+                        <li><a href="#menu" class="text-kireina-light hover:text-kireina-yellow transition">Menu</a>
+                        </li>
+                        <li><a href="#reservation"
+                                class="text-kireina-light hover:text-kireina-yellow transition">Reservasi</a></li>
+                        <li><a href="#about" class="text-kireina-light hover:text-kireina-yellow transition">Tentang
+                                Kami</a></li>
+                        <li><a href="#contact"
+                                class="text-kireina-light hover:text-kireina-yellow transition">Kontak</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-base font-bold mb-4">Jam Buka</h3>
+                    <ul class="space-y-2 text-kireina-light text-xs">
+                        <li class="flex justify-between">
+                            <span>Senin - Jumat</span>
+                            <span>08:00 - 22:00</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span>Sabtu - Minggu</span>
+                            <span>07:00 - 23:00</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span>Hari Libur</span>
+                            <span>07:00 - 00:00</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-base font-bold mb-4">Kontak Kami</h3>
+                    <ul class="space-y-2 text-kireina-light text-xs">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-2 text-kireina-yellow"></i>
+                            <a href="https://www.google.com/maps/place/Kireina.coffee/@-0.8998861,119.862727,17z/data=!3m1!4b1!4m6!3m5!1s0x2d8bedcedc38a4c7:0xde16b6e00c29d773!8m2!3d-0.8998861!4d119.862727!16s%2Fg%2F11x2wlkl0b?entry=ttu&g_ep=EgoyMDI1MDcwOS4wIKXMDSoASAFQAw%3D%3D"
+                                target="_blank" class="hover:text-kireina-yellow transition">
+                                Jl. Sungai Malei, Ujuna, Kec. Palu Bar., Kota Palu, Sulawesi Tengah 94111
+                            </a>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone mr-2 text-kireina-yellow"></i>
+                            <span>+62 21 1234 5678</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-2 text-kireina-yellow"></i>
+                            <span>info@kireinacoffee.com</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fab fa-instagram mr-2 text-kireina-yellow"></i>
+                            <a href="https://www.instagram.com/kireina.coffee/" target="_blank"
+                                class="hover:text-kireina-yellow transition">
+                                @kireina.coffee
+                            </a>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fab fa-whatsapp mr-2 text-kireina-yellow"></i>
+                            <span>+62 812 3456 7890</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-blue-400 pt-4 text-center text-blue-200 text-xs">
+                <p>&copy; 2023 Kireina Coffee. Hak Cipta Dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Menu category filtering
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                // In a real implementation, this would filter the menu items
+                // For this demo, we'll just show an alert
+                alert(`Menampilkan menu: ${button.textContent}`);
+            });
+        });
+
+        // Form submission handling
+        const reservationForm = document.getElementById('reservationForm');
+        reservationForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            // Ambil data dari form
+            const nama = reservationForm.querySelector('input[name="nama"]').value;
+            const whatsapp = reservationForm.querySelector('input[name="whatsapp"]').value;
+            const tanggal = reservationForm.querySelector('input[name="tanggal"]').value;
+            const waktu = reservationForm.querySelector('select[name="waktu"]').value;
+            const jumlahOrang = reservationForm.querySelector('select[name="jumlahOrang"]').value;
+            const tipeTempat = reservationForm.querySelector('input[name="placeType"]:checked').value;
+            const pesanTambahan = reservationForm.querySelector('textarea[name="pesanTambahan"]').value;
+
+            // Format pesan WhatsApp
+            let pesan = `Reservasi Kireina Coffee%0A`;
+            pesan += `Nama: ${nama}%0A`;
+            pesan += `No. WhatsApp: ${whatsapp}%0A`;
+            pesan += `Tanggal: ${tanggal}%0A`;
+            pesan += `Waktu: ${waktu}%0A`;
+            pesan += `Jumlah Orang: ${jumlahOrang}%0A`;
+            pesan += `Tipe Tempat: ${tipeTempat}%0A`;
+            pesan += `Pesan Tambahan: ${pesanTambahan ? pesanTambahan : '-'}%0A`;
+
+            // Redirect ke WhatsApp user
+            window.open(`https://wa.me/628231781942?text=${pesan}`, '_blank');
+        });
+
+        // Floating animation for elements
+        const floatingElements = document.querySelectorAll('.menu-card, .reservation-card');
+        floatingElements.forEach((el, index) => {
+            el.style.animationDelay = `${index * 0.1}s`;
+        });
+    </script>
+</body>
+
+</html>
